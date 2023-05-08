@@ -19,7 +19,8 @@
   <a href="#">
     <img src="https://img.shields.io/badge/platform-Windows-red">
   </a>
- 
+    <a href="https://www.codefactor.io/repository/github/jxroot/ReHTTP">  <img src="https://www.codefactor.io/repository/github/jxroot/ReHTTP/badge" alt="CodeFactor" /> </a>
+   
 
    
 
