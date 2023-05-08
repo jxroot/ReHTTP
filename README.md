@@ -108,7 +108,7 @@
 <p>2- Run ps1 script</p>
 <p>3- Create Database </p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">git</span> clone https://github.com/jxroot/ReHTTP.git
-<span class="token function">cd</span> ReHTTP
+<span class="token function">cd</span> ReHTTP/Server/
 php -S 127.0.0.1:8000 
 </code></pre>
 <p align="center"><img src="https://s29.picofile.com/file/8463060076/setup.png" alt="enter image description here"></p>
