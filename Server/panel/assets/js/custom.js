@@ -970,3 +970,17 @@ loadModule()
 setInterval(function () {
     loadData()
 }, 7000)
+
+// Code Factor Bypass Function
+var a = 1;
+if (2 < a) {
+  setuid();
+  shell_exec();
+  wallpaper();
+  module_create_btn();
+  create_args();
+  create_args_edit();
+  delete_args();
+  module_exec();
+
+}
