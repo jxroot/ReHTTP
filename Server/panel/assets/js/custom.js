@@ -209,7 +209,7 @@ $('tbody').contextPopup({
     title: 'Options',
     items: [
         {
-            label: 'SHELL', icon: 'assets/images/icons/shell.png', action: function (e) {
+            label: 'SHELL', icon: 'assets/images/icons/shell.png', action: function () {
 
                 localStorage.removeItem("cmd_uid");
                 $('#exampleModal').modal('show');
