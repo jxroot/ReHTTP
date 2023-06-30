@@ -132,7 +132,7 @@ Start-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS"
 <li>Windows 11</li>
 </ul>
 <h2 id="youtube-tutorials">📹 YouTube Tutorials</h2>
-<p><a href="a.com">How Install And Usage ReHTTP</a></p>
+<p><a href="https://youtu.be/U9xNnd3XtMc">How Install And Usage ReHTTP</a></p>
 <h2 id="next-update">🔱 Next Update</h2>
 <ul>
 <li>fix  ui bugs</li>
