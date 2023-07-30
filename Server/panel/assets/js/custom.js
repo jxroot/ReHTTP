@@ -611,7 +611,7 @@ function module_exec_res() {
             $("#module_res").html(data)
             if (module === "ScreenShot") {
                 $("#module_res").css("display", "none");
-                $("#screen").attr("src", `../users/${uuid}/${data}`)
+                $("#screen").attr("src", `../users/${uuid}/${data.trim()}`)
 
             }
         });
