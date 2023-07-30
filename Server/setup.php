@@ -87,6 +87,7 @@ if (isset($_POST['btn'])) {
 
 ");
                 $sql->execute();
+                mkdir("users");
                 $template = "
                 <?php
                  error_reporting(0);
