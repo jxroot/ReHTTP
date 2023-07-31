@@ -10,7 +10,13 @@ if (isset($_POST['btn'])) {
         $panel_password = password_hash(trim(htmlspecialchars($_POST['panel_password'])), PASSWORD_BCRYPT);
         $panel_password_repeat = trim(htmlspecialchars($_POST['panel_password_repeat']));
         if ($_POST['panel_password'] === $panel_password_repeat) {
-                       $server_address = "http://" . $_SERVER['HTTP_HOST']. "/" ;
+            if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])){
+$REQUEST_SCHEME="https";
+}else{
+$REQUEST_SCHEME="http";
+}
+
+                       $server_address = "$REQUEST_SCHEME://" . $_SERVER['HTTP_HOST']. "/" ;
             $dsn = "mysql:host=localhost;dbname=$db_name";
             try {
                 $connection = new PDO($dsn, $db_username, $db_password);
