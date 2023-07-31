@@ -44,7 +44,7 @@ if (file_exists('config/db.php') and $_SERVER['REQUEST_METHOD'] === "GET") {
             $sql->bindValue(3, $uuid);
             $sql->execute();
         } else {
-            echo "Need Add";
+           # echo "Need Add";
 
             $sql = $connection->prepare("INSERT INTO `users` (`uuid`, `ip`, `info`,`l_connection`) VALUES (?, ?,?, CURRENT_TIMESTAMP())");
             $sql->bindValue(1, $uuid);
