@@ -12,7 +12,7 @@ if (isset($_POST['btn'])) {
         if ($_POST['panel_password'] === $panel_password_repeat) {
             $URI = $_SERVER['REQUEST_URI'];
             $break = explode("/", $URI);
-            $server_address = "http://" . $_SERVER['SERVER_ADDR'] . ":" . $_SERVER['SERVER_PORT'] . "/" . $break[1] . "/";
+            $server_address = "http://" . $_SERVER['HTTP_HOST'] . ":" . $_SERVER['SERVER_PORT'] . "/" . $break[1] . "/";
             $dsn = "mysql:host=localhost;dbname=$db_name";
             try {
                 $connection = new PDO($dsn, $db_username, $db_password);
