@@ -198,7 +198,7 @@ function shell_exec_res() {
 
     } else {
         $.post(BASE_URL, { "cmd_uid": cmd_uid, "uuid": uuid, "get_command": true }, function (data) {
-            $("#shell_res").html(data)
+            $("#shell_res").html(data.trim())
 
         });
     }
@@ -608,7 +608,7 @@ function module_exec_res() {
 
     } else {
         $.post(BASE_URL, { "cmd_uid": cmd_uid, "uuid": uuid, "get_command": true }, function (data) {
-            $("#module_res").html(data)
+            $("#module_res").html(data.trim())
             if (module === "ScreenShot") {
                 $("#module_res").css("display", "none");
                 $("#screen").attr("src", `../users/${uuid}/${data.trim()}`)
