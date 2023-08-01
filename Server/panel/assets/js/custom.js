@@ -39,7 +39,7 @@ function loadData() {
                 var template = `<tr class="alert" role="alert" uuid="${uuid}" oncontextmenu=(setuid(this))>
         <td>
             <label class="checkbox-wrap checkbox-primary" >
-                <input type="checkbox" checked>
+                <input type="checkbox"  uuid="${uuid}" onChange="multi_client(this)">
                 <span class="checkmark"></span>
             </label>
         </td>
@@ -68,8 +68,8 @@ function loadData() {
         </td>
 
         `
-
-                $("#client_area").append(template)
+      
+            $("#client_area").append(template)
 
             });
 
@@ -78,6 +78,22 @@ function loadData() {
         );
     }, 2000);
 }
+
+
+
+
+function multi_client(e){
+    var uuid = $(e).attr("uuid");
+    if(e.checked){
+        document.location.hash += uuid+"&"
+
+    }else{
+       var tmp_hash= document.location.hash.replace(`${uuid}&`,'');
+       document.location.hash = tmp_hash
+
+    }
+}
+
 function loadModule() {
     $(`input[module]`).each(function (i, el) {
         $(el).remove()
@@ -967,6 +983,6 @@ loadData()
 loadVariable()
 loadModule()
 // load user data every 7 secound for newuser and check client offline or online 
-setInterval(function () {
-    loadData()
-}, 7000)
+// setInterval(function () {
+//     loadData()
+// }, 7000)
