@@ -93,7 +93,7 @@ function multi_client(e){
             document.location.hash += uuid+"&"
 
         }
-
+    
     }else{
        var tmp_hash= document.location.hash.replace(`${uuid}&`,'');
        document.location.hash = tmp_hash
