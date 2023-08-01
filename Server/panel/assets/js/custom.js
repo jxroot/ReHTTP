@@ -1,6 +1,7 @@
 
 // start variable
 var BASE_URL = "request/handler.php"
+document.location.hash=""
 // end variable
 // start function
 
