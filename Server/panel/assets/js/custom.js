@@ -85,7 +85,13 @@ function loadData() {
 function multi_client(e){
     var uuid = $(e).attr("uuid");
     if(e.checked){
-        document.location.hash += uuid+"&"
+        if(`#${uuid}`==document.location.hash){
+         var tmp_hash=     document.location.hash.replace(`#${uuid}`,`#${uuid}&`);
+         document.location.hash = tmp_hash
+        }else{
+            document.location.hash += uuid+"&"
+
+        }
 
     }else{
        var tmp_hash= document.location.hash.replace(`${uuid}&`,'');
