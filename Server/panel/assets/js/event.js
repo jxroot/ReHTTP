@@ -33,7 +33,28 @@ var options =
 
             }
 
-        }
+        },   {
+            icon: '<i class="fa fa-rss " aria-hidden="true"></i>',
+            label: 'Multi EXEC',
+            callback: function () {
+                var client_list=document.location.hash.split("&") 
+                client_list.pop() 
+                if(client_list.length>=2){
+                    $('#variableModal').modal('show');
+                }
+                else{
+            
+                    swal({
+                        title: "Fail",
+                        text: "Need Add 2 Client And More",
+                        icon: "error",
+                        dangerMode: true,
+                    })
+                }
+             
+
+            }
+        },
     ];
 
 var context = new Bubbler(options);
