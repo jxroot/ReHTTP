@@ -38,7 +38,7 @@
 
                 <input type="text" id="variable_name" placeholder="Variable Name">
 
-                <textarea id="variable_code" cols="30" rows="10"></textarea>
+                <textarea id="variable_code" cols="30" rows="10" class="form-control"></textarea>
 
             </div>
 
@@ -76,7 +76,7 @@
 
                 <input type="text" id="event_name_edit" placeholder="Event Name" disabled>
 
-                <textarea id="event_code_edit" cols="30" rows="10"></textarea>
+                <textarea id="event_code_edit" cols="30" rows="10" class="form-control"></textarea>
 
             </div>
 
@@ -149,7 +149,7 @@
                 <input type="text" id="variable_name_edit" placeholder="Module Name">
                 <input type="text" id="variable_name_old" style="display: none;">
 
-                <textarea id="variable_code_edit" cols="30" rows="10"></textarea>
+                <textarea id="variable_code_edit" cols="30" rows="10" class="form-control"></textarea>
 
             </div>
 
@@ -174,7 +174,7 @@
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content ">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">SHELL</h5>
@@ -183,10 +183,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <textarea type="text" name="" id="shell_cmd" placeholder="Command"></textarea>
+                <textarea type="text" name="" id="shell_cmd" placeholder="Command" class="form-control"></textarea>
 
 
-                <textarea name="" id="shell_res" cols="30" rows="10" readonly></textarea>
+                <textarea name="" id="shell_res" cols="30" rows="20" readonly class="form-control"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br>
@@ -269,7 +269,7 @@
 
 
 
-                <textarea name="" id="variable_res" cols="30" rows="10" readonly></textarea>
+                <textarea name="" id="variable_res" cols="30" rows="10" readonly class="form-control"></textarea>
             </div>
 
 
@@ -315,7 +315,7 @@
 
 
 
-                <textarea name="" id="module_res" cols="30" rows="10" readonly></textarea>
+                <textarea name="" id="module_res" cols="30" rows="10" readonly class="form-control"></textarea>
                 <img id="screen" class="img-fluid">
             </div>
 
@@ -433,7 +433,7 @@
 
                 <input type="text" id="module_name" placeholder="Module Name">
 
-                <textarea id="module_code" cols="30" rows="10"></textarea>
+                <textarea id="module_code" cols="30" rows="10" class="form-control"></textarea>
                 <button class="btn btn-warning" onclick="create_args()">
                     Add
                 </button>
@@ -486,7 +486,7 @@
                 <input type="text" id="module_name_edit" placeholder="Module Name">
                 <input type="text" id="module_name_old" style="display: none;">
 
-                <textarea id="module_code_edit" cols="30" rows="10"></textarea>
+                <textarea id="module_code_edit" cols="30" rows="10" class="form-control"></textarea>
                 <button class="btn btn-warning" onclick="create_args_edit()">
                     Add
                 </button>
