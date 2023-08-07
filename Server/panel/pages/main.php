@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+<input type="hidden" id="cstoken" value="<?php echo $_SESSION['token'] ?? '' ?>">
   <section class="ftco-section">
     <div class="container">
       <div class="row justify-content-center">
