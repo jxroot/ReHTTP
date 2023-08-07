@@ -5,7 +5,7 @@ session_start();
 global $connection;
 $token = $_POST['token'];
 
-if (!$token || $token !== $_SESSION['token']) {
+if (!$token or $token !== $_SESSION['token'] or !isset($_SESSION['login'])) {
     // return 405 http status code
     header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
     exit;
