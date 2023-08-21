@@ -955,6 +955,6 @@ loadData();
 loadVariable();
 loadModule();
 // load user data every 7 secound for newuser and check client offline or online
-// setInterval(function () {
-//     loadData()
-// }, 7000)
+ setInterval(function () {
+     loadData()
+ }, 7000)
