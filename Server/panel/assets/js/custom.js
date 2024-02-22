@@ -907,6 +907,7 @@ function update_event_btn() {
     BASE_URL,
     { edit_event: true, name: name, code: code, token: token },
     function (data) {
+      data=data.trim()
       if (data === "ok") {
         swal({
           title: "OK",
