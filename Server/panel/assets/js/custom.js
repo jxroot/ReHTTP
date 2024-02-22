@@ -275,7 +275,8 @@ function module_create_btn() {
       placeholder: coma,
       token: token,
     },
-    function (data) {
+    function (data) { 
+      data=data.trim()
       if (data == "empty_name") {
         swal({
           title: "Oops...",
@@ -527,6 +528,7 @@ function module_update_btn() {
       token: token,
     },
     function (data) {
+      data=data.trim()
       if (data == "empty_name") {
         swal({
           title: "Oops...",
@@ -606,7 +608,12 @@ function module_remove() {
   }).then((willDelete) => {
     if (willDelete) {
       $.post(BASE_URL, { name: module, delete_module: true, token: token });
-
+      swal({
+        title: "OK",
+        text: `Module  ${module} Removed Successfuly!`,
+        icon: "success",
+        dangerMode: true,
+      });
       setTimeout(function () {
         loadModule();
         counter = 0;
