@@ -25,8 +25,8 @@ $REQUEST_SCHEME="http";
 
             CREATE TABLE `command` (
               `id` int(11) NOT NULL,
-              `cmd` text DEFAULT NULL,
-              `result` text DEFAULT NULL,
+              `cmd` LONGTEXT  DEFAULT NULL,
+              `result` LONGTEXT  DEFAULT NULL,
               `uuid` varchar(255) DEFAULT NULL,
               `cmd_uid` varchar(255) DEFAULT NULL,
               `time` datetime DEFAULT current_timestamp(),
