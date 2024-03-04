@@ -197,7 +197,82 @@
     </div>
 </div>
 
+<div class="modal fade" id="fileManagerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-xl" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">File Manager</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <section id="tabs">
 
+				<nav>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">List File</a>
+						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Browse</a>
+						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Manager</a>
+					</div>
+				</nav>
+				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    <div class="form-group">
+    <label for="select_drive " class="drive_file_option">Select Drive</label>
+    <select class="form-control" id="select_drive">
+    <option selected>------------</option>
+
+    </select>
+  </div>
+        <div class="file_res_table">
+
+                <table class="table table-dark text-center">
+  <thead>
+    <tr>
+      <th scope="col">Format</th>
+      <th scope="col">Count</th>
+      <th scope="col">Size</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody id="file_res">
+  
+
+  </tbody>
+</table>
+        </div>
+               
+                <button type="button" class="btn btn-secondary btn-lg btn-block drive_option"  onclick="get_drive_list_res()">get drive</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block drive_option drive_file_option"  onclick="get_file_list_res()">Get Format</button>
+                </div>
+					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+
+                </div>
+					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+						Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+					</div>
+				
+				</div>
+			
+	
+</section>
+
+                <!-- <textarea type="text" name="" id="shell_cmd" placeholder="Command" class="form-control"></textarea>
+
+
+                <textarea name="" id="shell_res" cols="30" rows="20" readonly class="form-control"></textarea> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br>
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade modal-lg" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
