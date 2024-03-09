@@ -144,6 +144,15 @@ New-Item -Path . -Name evil.ps1 -Value $template -Force
 </ul>
 <h2 id="youtube-tutorials">📹 YouTube Tutorials</h2>
 <p><a href="https://youtu.be/U9xNnd3XtMc">How Install And Usage ReHTTP</a></p>
+<h2 id="Doante">✌️ Doante Me:</h2>
+<ul>
+<li>Ethereum (ETH)   : 0xfeCB5B86b0694FE943472c11183455924899e618 -  ETH Network</li>
+<li>Bitcoin  (BTC)   : bc1qnye95tuhvzzhuaywzem7wgp84uz5z9x3pqzadm </li>
+<li>Tether   (USDT) : TAaN7FgmD1HQYwJRgdYsGWB8Uhunj6FGWh - TRC20</li>
+<li>Toncoin  (TON)   : UQCcdnF94j0Uqxyt7gVHQkx7oRwzZTQFyJ7fhXhM2Sq_SFGS </li>
+<li>add event for distroy</li>
+
+</ul>
 <h2 id="next-update">🔱 Next Update</h2>
 <ul>
 <li>fix  ui bugs</li>
