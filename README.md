@@ -148,9 +148,9 @@ New-Item -Path . -Name evil.ps1 -Value $template -Force
 <ul>
 <li>Ethereum (ETH)   : 0xfeCB5B86b0694FE943472c11183455924899e618 -  ETH Network</li>
 <li>Bitcoin  (BTC)   : bc1qnye95tuhvzzhuaywzem7wgp84uz5z9x3pqzadm </li>
-<li>Tether   (USDT) : TAaN7FgmD1HQYwJRgdYsGWB8Uhunj6FGWh - TRC20</li>
+<li>Tether   (USDT)  : TAaN7FgmD1HQYwJRgdYsGWB8Uhunj6FGWh - TRC20</li>
 <li>Toncoin  (TON)   : UQCcdnF94j0Uqxyt7gVHQkx7oRwzZTQFyJ7fhXhM2Sq_SFGS </li>
-<li>add event for distroy</li>
+
 
 </ul>
 <h2 id="next-update">🔱 Next Update</h2>
