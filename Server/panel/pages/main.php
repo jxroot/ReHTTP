@@ -22,25 +22,34 @@
           <h2 class="heading-section">ReHTTP</h2>
         </div>
       </div>
+      <div class="input-group">
+  <input type="text" class="form-control text-center" aria-label="Text input with dropdown button" placeholder="Default Show All Client" id="search">
+
+</div>
+<br>
+
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-4 col-md-12">
           <div class="table-wrap">
-            <table class="table table-responsive-xl">
+            <table class=" table table-responsive-xl ">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
-                  <th>OS</th>
+                  <th onclick='$("input:checkbox").trigger("click")'>OS</th>
                   <th>IP</th>
                   <th>uuid</th>
-                  
+                  <th>Username</th>
+                  <th>Member</th>
+                  <th>Country</th>                  
                   <th>Status</th>
+                  <th>JobQueue</th>
 
                   <th>&nbsp;</th>
                
                 </tr>
               </thead>
               <tbody id="client_area">
-
+            
 
               </tbody>
               
