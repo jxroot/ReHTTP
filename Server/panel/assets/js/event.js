@@ -37,13 +37,18 @@ var options =
             icon: '<i class="fa fa-rss " aria-hidden="true"></i>',
             label: 'Multi EXEC',
             callback: function () {
+            
                 var client_list=document.location.hash.split("&") 
                 client_list.pop() 
                 if(client_list.length>=2){
-                    $('#variableModal').modal('show');
+                    $('#run_all_client').modal('show');
+                    var data=document.location.hash.split("&") 
+                    data.pop()
+                    
+
+                   
                 }
                 else{
-            
                     swal({
                         title: "Fail",
                         text: "Need Add 2 Client And More",
