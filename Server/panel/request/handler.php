@@ -30,6 +30,26 @@ if (!$token or $token !== $_SESSION['token'] or !isset($_SESSION['login'])) {
 
         echo json_encode($list);
     }
+    if (isset($_POST['online']) and isset($_POST['uuid']) and !empty($_POST['uuid'])) {
+        $uuid = clear_string($_POST['uuid']);
+        $sql = $connection->prepare("SELECT status FROM `users`  WHERE uuid=?");
+        $sql->bindValue(1, $uuid);
+        $sql->execute();
+        $data = $sql->fetch(PDO::FETCH_ASSOC);
+        echo $data['status'];
+        
+   
+    }
+    if (isset($_POST['failjob']) and isset($_POST['uuid']) and !empty($_POST['uuid'])) {
+        $uuid = clear_string($_POST['uuid']);
+        $sql = $connection->prepare("SELECT failjob FROM `users`  WHERE uuid=?");
+        $sql->bindValue(1, $uuid);
+        $sql->execute();
+        $data = $sql->fetch(PDO::FETCH_ASSOC);
+        echo $data['failjob'];
+        
+   
+    }
     if (isset($_POST['offline'])) {
         $sql = $connection->prepare("UPDATE `users` SET `status` =0 ");
         $sql->execute();
@@ -147,6 +167,7 @@ if (!$token or $token !== $_SESSION['token'] or !isset($_SESSION['login'])) {
         $sql->bindValue(2, $uuid);
         $sql->execute();
     }
+    
     if (isset($_POST['add_command'])) {
         $uuid = clear_string($_POST['uuid']);
         if (!isset($uuid) or empty($uuid)) {
