@@ -184,7 +184,7 @@
             </div>
             <div class="modal-body">
                 <textarea type="text" name="" id="shell_cmd" placeholder="Command" class="form-control"></textarea>
-
+                <br>
 
                 <textarea name="" id="shell_res" cols="30" rows="20" readonly class="form-control"></textarea>
             </div>
@@ -224,6 +224,7 @@
     <label for="select_drive " class="drive_file_option">Select Drive</label>
     <select class="form-control" id="select_drive">
     <option selected>------------</option>
+    <option >ALL</option>
 
     </select>
   </div>
@@ -249,7 +250,45 @@
                 <button type="button" class="btn btn-secondary btn-lg btn-block drive_option drive_file_option"  onclick="get_file_list_res()">Get Format</button>
                 </div>
 					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="input-group">
+                        
+                        <input type="text" class="form-control text-center " aria-label="Text input with dropdown " placeholder="Default Current Directory Script Running" id="search_dir_input">
+<div class="search_dir_table">
+<table class="table table-dark text-center ">
+<thead>
+<tr>
+<th scope="col">Type</th>
+<th scope="col">Name</th>
+<th scope="col">LastAccessTime</th>
+<th scope="col">Size</th>
+<th scope="col">Operation</th>
+</tr>
+</thead>
+<tbody id="search_dir_res">
 
+
+</tbody>
+</table>
+</div>
+<!-- <div class="container">
+  <div class="row">
+    <div class="col text-center">
+      <b>Back</b>
+    </div>
+  </div>
+</div> -->
+<input id="uploader" type="file" style='display:none'/>
+
+<div class="container loadersp">
+    <div class="row">
+        <img class="img-fluid loaders" src="assets/images/load.gif"> 
+
+    </div>
+</div>
+
+
+
+</div>
 
                 </div>
 					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
@@ -361,6 +400,50 @@
     </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="run_all_client" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Run All</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <textarea type="text" name="" id="run_all_shell_cmd" placeholder="Run All Command" class="form-control"></textarea>
+            
+            </div>
+
+
+
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><br>
+                <button type="button" class="btn btn-primary" onclick="run_all_exec()">Run</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -380,7 +463,7 @@
                         <button type="button" class="btn btn-primary" onclick="module_remove()">Remove-Module</button>
                     </div>
                     <br>
-                    <select class="form-control" id="module_option">
+                    <select class="form-control text-center" id="module_option">
 
                     </select>
                 </div>
