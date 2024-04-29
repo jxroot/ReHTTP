@@ -46,8 +46,8 @@ $REQUEST_SCHEME="http";
               `type` int(11) NOT NULL DEFAULT 1
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             CREATE TABLE `admin` (
-                `username` varchar(255) NOT NULL,
-                `password` varchar(255) NOT NULL
+                `username` varchar(255) DEFAULT NULL,
+                `password` varchar(255) DEFAULT NULL
               ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             INSERT INTO `module` (`id`, `name`, `code`, `args`, `place_holder`, `type`) VALUES
             (3, 'IP', '\$ip = Invoke-RestMethod https://ident.me\nreturn  \$ip', 0, '', 1),
