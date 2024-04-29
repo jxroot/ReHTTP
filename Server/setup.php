@@ -64,10 +64,10 @@ $REQUEST_SCHEME="http";
             
             CREATE TABLE `users` (
               `id` int(11) NOT NULL,
-              `uuid` varchar(255) NOT NULL,
-              `ip` varchar(255) NOT NULL,
-              `info` text NOT NULL,
-              `label` varchar(50) NOT NULL,
+              `uuid` varchar(255) DEFAULT NULL,
+              `ip` varchar(255) DEFAULT NULL,
+              `info` text DEFAULT NULL,
+              `label` varchar(50) DEFAULT NULL,
               `status` int(11) NOT NULL DEFAULT 0,
               `failjob` int(11) NOT NULL DEFAULT 1,
               `f_connection` datetime NOT NULL DEFAULT current_timestamp(),
