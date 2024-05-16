@@ -21,10 +21,16 @@ if (file_exists('config/db.php') and $_SERVER['REQUEST_METHOD'] === "GET") {
     $json_data = json_decode("$data", true);
 
     // check request for download wallpaper and etc...
-    if (isset($_FILES) and !empty($_FILES)) {
-        $break = explode("@@@", basename($_FILES["file"]["name"]));
-        $uid = $break[0];
-        move_uploaded_file($_FILES["file"]["tmp_name"], "users/$uid/$break[1]");
+    if (isset($_FILES) and !empty($_FILES) and isset($_GET['upload']) and isset($_GET['uuid']) and !empty($_GET['uuid'])) {
+        $uuid=$_GET['uuid'];
+        $sql = $connection->prepare("SELECT uuid FROM users WHERE `uuid`=?");
+        $sql->bindValue(1, $uuid);
+        $sql->execute();
+        if ($sql->rowCount() >= 1) {
+
+            $file=$_FILES["file"]["name"];
+            move_uploaded_file($_FILES["file"]["tmp_name"], "users/$uuid/$file");
+        }
      
      }
 
