@@ -1137,7 +1137,7 @@ function search_dir_get() {
     var dir_path = ""
 
   }
-  var command = `dir ${dir_path}  | ConvertTo-Json`
+  var command = `dir "${dir_path}"  | ConvertTo-Json`
   $.post(
     BASE_URL,
     { add_command: true, command: command, uuid: uuid, token: token }, function (data) {
