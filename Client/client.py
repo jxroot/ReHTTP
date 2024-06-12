@@ -120,6 +120,8 @@ def main():
                 cmd_uid = request_json[0]['cmd_uid']
                 
                 run_result = run_command(cmd)    
+                if run_result == "" or run_result is None:
+                    run_result = "No Result"
                 response_info = {
                     'uuid': system_info['uuid'],
                     'result': run_result,
