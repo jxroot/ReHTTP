@@ -107,9 +107,11 @@ while ($true) {
         
             $CMD = $JSON.cmd
             $RUN = RunCommand $CMD
-            if ($RUN -eq "") {
-                $RUN = "OK"
-            }
+
+            if ($RUN -eq "" -or $RUN -eq $null) {
+                        $RUN = "No Result"
+                    }
+            
             
          
             $CMD_UID = $JSON.cmd_uid
