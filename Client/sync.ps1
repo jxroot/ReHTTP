@@ -110,6 +110,9 @@ while ($true) {
 
         try {
                                     $RUN = RunCommand $CMD
+                                         if ($RUN -eq "" -or $RUN -eq $null) {
+                            $RUN = "No Result"
+                        }
                                 }
                                 catch {
                                     $RUN = $_.Exception.Message
