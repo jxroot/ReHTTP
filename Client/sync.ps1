@@ -86,7 +86,7 @@ while ($true) {
    
     while ($true) {
        # Generate a random delay between 1 and 4 seconds
-       $delay = Get-Random -Minimum 1 -Maximum 4s
+       $delay = Get-Random -Minimum 1 -Maximum 4
 
        # Record the start time
        $startTime = Get-Date
